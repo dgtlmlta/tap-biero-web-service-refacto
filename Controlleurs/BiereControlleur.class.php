@@ -98,13 +98,30 @@ class BiereControlleur
 	 */
 	public function deleteAction(Requete $oReq)
 	{
-		if(!$this->valideAuthentification())
+		/* if(!$this->valideAuthentification())
+		{
+			$this->retour['erreur'] = $this->erreur(401);
+			return $this->retour;
+		} */
+
+		if(!isset($oReq->url_elements[0]) || !is_numeric($oReq->url_elements[0]))	// Normalement l'id de la biere 
 		{
 			$this->retour['erreur'] = $this->erreur(401);
 			return $this->retour;
 		}
+
+		$modelBiere = new Biere();		
+		$idBiere = (int)$oReq->url_elements[0];
+
+		if(!$resultat = $modelBiere->effacerBiere($idBiere)) {
+			$this->retour['erreur'] = $this->erreur(401);
+			return $this->retour;
+		};
 		
-		
+		$this->retour["data"] = [
+			"message" => $resultat
+		];
+
 		return $this->retour;
 		
 	}

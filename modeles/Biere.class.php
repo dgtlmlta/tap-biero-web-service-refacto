@@ -76,8 +76,7 @@ left join note t2 ON t1.id_biere = t2.id_biere GROUP by t1.id_biere";
 		$query = "DELETE from biere where id_biere = ". $id_biere;
 		$resQuery = $this->_db->query($query);	
 		
-		// return $resQuery;
-		return "Test";
+		return $resQuery;
 	}
 	
 	/**
