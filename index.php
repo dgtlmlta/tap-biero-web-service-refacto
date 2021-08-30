@@ -1,7 +1,6 @@
 <?php
 
 use TodoWS\lib\Requete;
-use TodoWS\Controlleurs\BiereControlleur;
 
 ini_set('display_errors', 1);
 error_reporting(~0);

@@ -101,7 +101,9 @@ class BiereControlleur
 		if(!$this->valideAuthentification())
 		{
 			$this->retour['erreur'] = $this->erreur(401);
+			return $this->retour;
 		}
+		
 		
 		return $this->retour;
 		
