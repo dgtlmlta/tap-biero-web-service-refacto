@@ -11,7 +11,7 @@
 	
 	include_once('db_info.php');
 	
-	function mon_autoloader($class) 
+	/* function mon_autoloader($class) 
 	{
 		$dossierClasse = array('modeles/', 'vues/', 'lib/', 'lib/mysql/', '' );	// Ajouter les dossiers au besoin
 		
@@ -25,8 +25,24 @@
 		}
 		
 	  
+	} */
+
+	function autoloader($class) {
+		$appNamespace = "TodoWS";
+
+		// Retirer le namespace de l'application pour la recherche du fichier
+		$class = str_replace($appNamespace, "", $class);
+
+		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.class.php';
+
+		$path = __DIR__ . $class;
+
+		if (!file_exists($path)) {
+			var_dump($path);
+			return;
+		}
+
+		require($path);
 	}
 	
-	spl_autoload_register('mon_autoloader');
-	
-?>
+	spl_autoload_register('autoloader');

@@ -1,4 +1,7 @@
 <?php
+
+namespace TodoWS\lib;
+
 /**
  * Class Requete
  * Gère les requêtes HTTP

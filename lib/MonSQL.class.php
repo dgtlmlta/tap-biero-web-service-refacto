@@ -1,4 +1,6 @@
 <?php
+namespace TodoWS\lib;
+
 /**
  * Class MonSQL
  * Classe qui génère ma connection à MySQL à travers un singleton
@@ -10,7 +12,7 @@
  *
  *
  */
-class MonSQL extends mysqli{
+class MonSQL extends \mysqli{
 	/**
 	 * @var $_instance
 	 * @access private

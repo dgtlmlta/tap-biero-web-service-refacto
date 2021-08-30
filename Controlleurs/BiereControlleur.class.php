@@ -1,4 +1,9 @@
 <?php
+
+namespace TodoWS\Controlleurs;
+
+use TodoWS\lib\Requete;
+use TodoWS\modeles\Biere;
 /**
  * Class BiereControleur
  * Controleur de la ressource Biere

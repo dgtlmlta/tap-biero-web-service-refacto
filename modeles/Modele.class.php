@@ -1,4 +1,6 @@
 <?php
+namespace TodoWS\modeles;
+
 /**
  * Class Modele
  * Les modèles doivent hérités de cette classe.
@@ -14,7 +16,7 @@ class Modele {
     protected $_db;
 	function __construct ()
 	{
-		$this->_db = MonSQL::getInstance();
+		$this->_db = \TodoWS\lib\MonSQL::getInstance();
 	}
 	
 	function __destruct ()

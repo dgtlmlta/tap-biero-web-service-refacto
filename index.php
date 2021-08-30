@@ -1,4 +1,8 @@
 <?php
+
+use TodoWS\lib\Requete;
+use TodoWS\Controlleurs\BiereControlleur;
+
 ini_set('display_errors', 1);
 error_reporting(~0);
 /**
@@ -39,9 +43,10 @@ if($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
 		http_response_code(400);
 		exit();
 	}
+
+	$namespaceControlleur = "\\TodoWS\\Controlleurs\\";
 	
-	$nomControlleur = ucfirst($oReq->ressource) . 'Controlleur';
-	
+	$nomControlleur = $namespaceControlleur . ucfirst($oReq->ressource) . 'Controlleur';		
 	
 	if (!class_exists($nomControlleur)) {
 		http_response_code(400);
@@ -60,17 +65,3 @@ if($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
 	$resultat = $oControlleur->$nomAction($oReq);
 
 	echo json_encode($resultat);
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-			

@@ -1,4 +1,7 @@
 <?php
+
+namespace TodoWS\modeles;
+
 /**
  * Classe Commentaire
  * 
