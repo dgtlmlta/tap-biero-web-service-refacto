@@ -43,28 +43,24 @@ if($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
 	$nomControlleur = ucfirst($oReq->ressource) . 'Controlleur';
 	
 	
-	if (class_exists($nomControlleur)) {
-		
-		$reflectionClass = new ReflectionClass($nomControlleur);
-		
-		if($reflectionClass->isInstantiable()){
-			$oControlleur = new $nomControlleur();
-			$nomAction = strtolower($oReq->verbe) . 'Action';
-			$resultat = $oControlleur->$nomAction($oReq);
-
-			// La vue!
-			echo json_encode($resultat);
-		}
-		else{
-			http_response_code(400);
-			exit();
-		}	
-		
-	}
-	else{
+	if (!class_exists($nomControlleur)) {
 		http_response_code(400);
 		exit();
-	}	
+	}
+
+	$reflectionClass = new ReflectionClass($nomControlleur);
+		
+	if(!$reflectionClass->isInstantiable()){
+		http_response_code(400);
+		exit();
+	}
+	
+	$oControlleur = new $nomControlleur();
+	$nomAction = strtolower($oReq->verbe) . 'Action';
+	$resultat = $oControlleur->$nomAction($oReq);
+
+	echo json_encode($resultat);
+		
 	
 	
 	

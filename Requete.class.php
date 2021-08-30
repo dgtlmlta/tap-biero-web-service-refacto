@@ -23,7 +23,7 @@ class Requete
         
 		$this->verbe = $_SERVER['REQUEST_METHOD'];
 		
-        $_GET['url'] = (isset($_GET['url']) ? $_GET['url'] : "");
+        $_GET['url'] = $_GET['url'] ?? "";
 		$_GET['url'] = trim($_GET['url'], '\/');
         $this->url_elements = explode('/', $_GET['url']);
         $this->traitementParametre();

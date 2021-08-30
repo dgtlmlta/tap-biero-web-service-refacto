@@ -21,37 +21,36 @@ class BiereControlleur
 	 */
 	public function getAction(Requete $requete)
 	{
-		if(isset($requete->url_elements[0]) && is_numeric($requete->url_elements[0]))	// Normalement l'id de la biere 
-		{
-			$id_biere = (int)$requete->url_elements[0];
-			
-			if(isset($requete->url_elements[1])) 
-			{
-				switch($requete->url_elements[1]) 
-				{
-					case 'commentaire':
-						$this->retour["data"] = $this->getCommentaire($id_biere);
-						break;
-					case 'note':
-						$this->retour["data"] = $this->getNote($id_biere);
-						break;
-					default:
-						$this->retour['erreur'] = $this->erreur(400);
-						unset($this->retour['data']);
-						break;
-				}
-			} 
-			else // Retourne les infos d'une bière
-			{
-				$this->retour["data"] = $this->getBiere($id_biere);
-			}
-		} 
-		else 
+		if(!isset($requete->url_elements[0]) || !is_numeric($requete->url_elements[0]))	// Normalement l'id de la biere 
 		{
 			$this->retour["data"] = $this->getListeBiere();
-			
+			return $this->retour;
 		}
+		
+		$id_biere = (int)$requete->url_elements[0];
 
+		if(isset($requete->url_elements[1])) 
+		{
+			switch($requete->url_elements[1]) 
+			{
+				case 'commentaire':
+					$this->retour["data"] = $this->getCommentaire($id_biere);
+					break;
+				case 'note':
+					$this->retour["data"] = $this->getNote($id_biere);
+					break;
+				default:
+					unset($this->retour['data']);	
+					$this->retour['erreur'] = $this->erreur(400);					
+					break;
+			}
+
+			return $this->retour;
+		}
+		
+		
+		$this->retour["data"] = $this->getBiere($id_biere);
+		
         return $this->retour;		
 		
 	}
