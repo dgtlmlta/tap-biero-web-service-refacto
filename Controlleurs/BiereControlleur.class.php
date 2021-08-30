@@ -114,7 +114,7 @@ class BiereControlleur
 		$idBiere = (int)$oReq->url_elements[0];
 
 		if(!$resultat = $modelBiere->effacerBiere($idBiere)) {
-			$this->retour['erreur'] = $this->erreur(401);
+			$this->retour['erreur'] = $this->erreur(401, "Erreur de requête à la base de données");
 			return $this->retour;
 		};
 		
@@ -205,12 +205,15 @@ class BiereControlleur
     }
 
 	
-	private function erreur($code, $data="")
+	private function erreur($code, $messageErreur = "Erreur de requete", $data="")
 	{
 		//header('HTTP/1.1 400 Bad Request');
 		http_response_code($code);
 
-		return array("message"=>"Erreur de requete", "code"=>$code);
+		return array(
+			"message"	=> $messageErreur,
+			"code"		=> $code
+		);
 		
 	}
 
