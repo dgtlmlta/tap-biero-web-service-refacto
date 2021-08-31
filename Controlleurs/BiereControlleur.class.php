@@ -4,6 +4,7 @@ namespace TodoWS\Controlleurs;
 
 use TodoWS\lib\Requete;
 use TodoWS\modeles\Biere;
+use TodoWS\modeles\Commentaire;
 /**
  * Class BiereControleur
  * Controleur de la ressource Biere
@@ -187,8 +188,9 @@ class BiereControlleur
      */	
     private function getCommentaire($id_biere)
     {
-        $res = Array();
-        return $res; 
+        $modelCommentaire = new Commentaire();
+        var_dump($modelCommentaire->getListe($id_biere));
+        return $modelCommentaire->getListe($id_biere);
     }
 
     /**
