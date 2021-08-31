@@ -5,6 +5,8 @@ namespace TodoWS\Controlleurs;
 use TodoWS\lib\Requete;
 use TodoWS\modeles\Biere;
 use TodoWS\modeles\Commentaire;
+use TodoWS\modeles\Usager;
+
 /**
  * Class BiereControleur
  * Controleur de la ressource Biere
@@ -90,7 +92,40 @@ class BiereControlleur
             return $this->retour;
         }
 
-        return $this->ajouterBiere($oReq->parametres);
+        if(!isset($oReq->url_elements[0]) || !is_numeric($oReq->url_elements[0]))	// Normalement l'id de la biere 
+        {
+            $this->ajouterBiere($oReq->parametres);
+            return $this->retour;
+        }
+        
+        $id_biere = (int)$oReq->url_elements[0];
+        
+        if(isset($oReq->url_elements[1])) 
+        {
+            switch($oReq->url_elements[1]) 
+            {
+                case 'commentaire':                    
+                    $modeleUsager = new Usager();
+                    $id_usager = $modeleUsager->ajouterUsager($oReq->parametres["courriel"]);
+
+                    $this->ajouterCommentaire($id_usager, $id_biere, $oReq->parametres["commentaire"]);
+                    break;
+                case 'note':
+                    $this->retour["data"] = $this->getNote($id_biere);
+                    break;
+                default:
+                    unset($this->retour['data']);	
+                    $this->retour['erreur'] = $this->erreur(400);					
+                    break;
+            }
+
+            return $this->retour;
+        }
+        
+        
+        $this->retour["data"] = $this->getBiere($id_biere);
+        
+        return $this->retour;
     }
     
     /**
@@ -150,6 +185,31 @@ class BiereControlleur
                 
         return $this->retour;
     }
+
+    /**
+     * Méthode qui ajoute un commentaire à la base de données
+     * 
+     * @param int $id_usager Identifiant de l'usager
+     * @param int $id_biere Identifiant de la bière
+     * @param String $commentaire Le commentaire
+     * @return Mixed Données retournées
+     */
+    private function ajouterCommentaire($id_usager, $id_biere, $commentaire)
+    {
+        $modelCommentaire = new Commentaire();
+
+        if(!$resultatId = $modelCommentaire->ajouterCommentaire($id_usager, $id_biere, $commentaire)) {
+            $this->retour['erreur'] = $this->erreur(401, "Erreur de requête à la base de données");
+            return $this->retour;
+        };
+
+        $this->retour["data"] = [
+            "message" => "Insertion réussie",
+            "biereId" => $resultatId
+        ];
+                
+        return $this->retour;
+    }
         
     
     /**
@@ -189,7 +249,7 @@ class BiereControlleur
     private function getCommentaire($id_biere)
     {
         $modelCommentaire = new Commentaire();
-        var_dump($modelCommentaire->getListe($id_biere));
+        
         return $modelCommentaire->getListe($id_biere);
     }
 

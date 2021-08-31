@@ -1,4 +1,6 @@
 <?php
+
+namespace TodoWS\modeles;
 /**
  * Class Usager
  * 

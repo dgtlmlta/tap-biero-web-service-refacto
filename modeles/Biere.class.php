@@ -58,7 +58,7 @@ left join note t2 ON t1.id_biere = t2.id_biere GROUP by t1.id_biere";
 		VALUES ('".$nom. "','". $brasserie. "','". $description. "','".$image."','1')";
 		$resQuery = $this->_db->query($query);
 
-		return ($this->_db->insert_id ? $this->_db->insert_id : 0);
+		return $this->_db->insert_id ?? 0;
 	}
 	
 	/**
