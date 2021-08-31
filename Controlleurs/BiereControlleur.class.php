@@ -80,8 +80,6 @@ class BiereControlleur
             $this->retour['erreur'] = $this->erreur(401);
             return $this->retour;
         }
-
-        
         
         return $this->retour;
     }
