@@ -15,24 +15,24 @@ namespace TodoWS\lib;
 
 class Requete 
 {
-    public $url_elements;
-    public $ressource;
-    public $verbe;
-    public $parametres;
+	public $url_elements;
+	public $ressource;
+	public $verbe;
+	public $parametres;
 	private $_db;
 	
-    public function __construct() {
-        $this->_db = MonSQL::getInstance();
-        
+	public function __construct() {
+		$this->_db = MonSQL::getInstance();
+		
 		$this->verbe = $_SERVER['REQUEST_METHOD'];
 		
-        $_GET['url'] = $_GET['url'] ?? "";
+		$_GET['url'] = $_GET['url'] ?? "";
 		$_GET['url'] = trim($_GET['url'], '\/');
-        $this->url_elements = explode('/', $_GET['url']);
-        $this->traitementParametre();
-        
-        $this->ressource = $this->url_elements[0];
-        array_splice($this->url_elements,0,1);
+		$this->url_elements = explode('/', $_GET['url']);
+		$this->traitementParametre();
+		
+		$this->ressource = $this->url_elements[0];
+		array_splice($this->url_elements,0,1);
 	}
 
 	/**
@@ -40,29 +40,29 @@ class Requete
 	 * @access private
 	 */
 	public function traitementParametre() {
-        $parametres = array();
+		$parametres = array();
 
-        // first of all, pull the GET vars
-        if (isset($_SERVER['QUERY_STRING'])) {
-            parse_str($_SERVER['QUERY_STRING'], $parametres);
-        }
+		// first of all, pull the GET vars
+		if (isset($_SERVER['QUERY_STRING'])) {
+			parse_str($_SERVER['QUERY_STRING'], $parametres);
+		}
 
-       	unset($parametres['url']);
-        $body = file_get_contents("php://input");
+	   	unset($parametres['url']);
+		$body = file_get_contents("php://input");
 		$content_type = false;
-        if(isset($_SERVER['CONTENT_TYPE'])) {
-            $content_type = $_SERVER['CONTENT_TYPE'];
-        }
+		if(isset($_SERVER['CONTENT_TYPE'])) {
+			$content_type = $_SERVER['CONTENT_TYPE'];
+		}
 				
-        $body_params = json_decode($body);
+		$body_params = json_decode($body);
 		
-        if($body_params) {
-            foreach($body_params as $nom => $valeur) {
+		if($body_params) {
+			foreach($body_params as $nom => $valeur) {
 				$parametres[$nom] = $this->aseptiserParametre($valeur);
-            }
-        }
-        
-        $this->parametres = $parametres;
+			}
+		}
+		
+		$this->parametres = $parametres;
 	}
 	
 	/**
@@ -73,11 +73,10 @@ class Requete
 	 */
 	private function aseptiserParametre($valeur)
 	{
-        if(is_string($valeur)){
-            $valeur = $this->_db->real_escape_string($valeur);
-            $valeur = htmlspecialchars($valeur);
-        }
+		if(is_string($valeur)){
+			$valeur = $this->_db->real_escape_string($valeur);
+			$valeur = htmlspecialchars($valeur);
+		}
 		return $valeur;
 	} 	
 }
-?>

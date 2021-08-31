@@ -48,15 +48,16 @@ left join note t2 ON t1.id_biere = t2.id_biere GROUP by t1.id_biere";
 	{
 		
 		
-		if(extract($data) > 0)
+		if(extract($data) == 0)
 		{
-			//$image = $image || "";	
-			$query = "INSERT INTO biere (`nom`, `brasserie`, `description`, `image`,`actif`) 
-			VALUES ('".$nom. "','". $brasserie. "','". $description. "','".$image."','1')";
-			$resQuery = $this->_db->query($query);
-			
+			return 0;			
 		}
-				
+			
+		//$image = $image || "";	
+		$query = "INSERT INTO biere (`nom`, `brasserie`, `description`, `image`,`actif`) 
+		VALUES ('".$nom. "','". $brasserie. "','". $description. "','".$image."','1')";
+		$resQuery = $this->_db->query($query);
+
 		return ($this->_db->insert_id ? $this->_db->insert_id : 0);
 	}
 	
