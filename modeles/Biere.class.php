@@ -36,7 +36,7 @@ class Biere extends Modele {
 				from biere t1 
 				left join note t2 ON t1.id_biere = t2.id_biere
 				GROUP by t1.id_biere";
-				
+
 		if($mrResultat = $this->_db->query($query))
 		{
 			while($biere = $mrResultat->fetch_assoc())
@@ -58,9 +58,7 @@ class Biere extends Modele {
 	 * @return int id de la biere
 	 */
 	public function ajouterBiere($data) 
-	{
-		
-		
+	{		
 		if(extract($data) == 0)
 		{
 			return 0;			
@@ -102,11 +100,12 @@ class Biere extends Modele {
 	 */
 	public function getBiere($id) 
 	{
-		$res = Array();
-		if($mrResultat = $this->_db->query("select * from biere where id_biere=". $id))
+		if(!$mrResultat = $this->_db->query("select * from biere where id_biere=". $id))
 		{
-			$biere = $mrResultat->fetch_assoc();
+			return false;
 		}
+
+		$biere = $mrResultat->fetch_assoc();
 		return $biere;
 	}
 	

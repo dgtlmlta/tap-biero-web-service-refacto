@@ -27,19 +27,19 @@ class BiereControlleur
      * @param Requete $oReq
      * @return Mixed Données retournées
      */
-    public function getAction(Requete $requete)
+    public function getAction(Requete $oReq)
     {
-        if(!isset($requete->url_elements[0]) || !is_numeric($requete->url_elements[0]))	// Normalement l'id de la biere 
+        if(!isset($oReq->url_elements[0]) || !is_numeric($oReq->url_elements[0]))	// Normalement l'id de la biere 
         {
             $this->retour["data"] = $this->getListeBiere();
             return $this->retour;
         }
         
-        $id_biere = (int)$requete->url_elements[0];
+        $id_biere = (int)$oReq->url_elements[0];
 
-        if(isset($requete->url_elements[1])) 
+        if(isset($oReq->url_elements[1])) 
         {
-            switch($requete->url_elements[1]) 
+            switch($oReq->url_elements[1]) 
             {
                 case 'commentaire':
                     $this->retour["data"] = $this->getCommentaire($id_biere);
@@ -55,7 +55,6 @@ class BiereControlleur
 
             return $this->retour;
         }
-        
         
         $this->retour["data"] = $this->getBiere($id_biere);
         
@@ -73,7 +72,16 @@ class BiereControlleur
         if(!$this->valideAuthentification())
         {
             $this->retour['erreur'] = $this->erreur(401);
+            return $this->retour;
         }
+
+        if(!isset($oReq->url_elements[0]) || !is_numeric($oReq->url_elements[0]))	// Normalement l'id de la biere 
+        {
+            $this->retour['erreur'] = $this->erreur(401);
+            return $this->retour;
+        }
+
+        
         
         return $this->retour;
     }
@@ -85,7 +93,6 @@ class BiereControlleur
      */
     public function putAction(Requete $oReq)		//ajout ou modification
     {
-        // var_dump($oReq);
         if(!$this->valideAuthentification())
         {
             $this->retour['erreur'] = $this->erreur(401);
@@ -148,17 +155,9 @@ class BiereControlleur
             return $this->retour;
         }
 
-        $modelBiere = new Biere();		
-        $idBiere = (int)$oReq->url_elements[0];
+        $id_biere = (int)$oReq->url_elements[0];
 
-        if(!$resultat = $modelBiere->effacerBiere($idBiere)) {
-            $this->retour['erreur'] = $this->erreur(401, "Erreur de requête à la base de données");
-            return $this->retour;
-        };
-        
-        $this->retour["data"] = [
-            "message" => $resultat
-        ];
+        $this->effacerBiere($id_biere);
 
         return $this->retour;
     }
@@ -186,6 +185,29 @@ class BiereControlleur
                 
         return $this->retour;
     }
+
+     /**
+     * Méthode qui ajoute une bière à la base de données
+     * 
+     * @param Int $id_biere Tableau des données nécessaires à l'ajout
+     * @return Mixed Données retournées
+     */
+    private function effacerBiere($id_biere)
+    {
+        $modelBiere = new Biere();		
+        
+        if(!$resultat = $modelBiere->effacerBiere($id_biere)) {
+            $this->retour['erreur'] = $this->erreur(401, "Erreur de requête à la base de données");
+            return $this->retour;
+        };
+        
+        $this->retour["data"] = [
+            "message" => $resultat
+        ];
+                
+        return $this->retour;
+    }
+
 
     /**
      * Méthode qui ajoute un commentaire à la base de données
