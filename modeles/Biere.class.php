@@ -22,8 +22,21 @@ class Biere extends Modele {
 	public function getListe() 
 	{
 		$res = Array();
-		$query = "select  t1.id_biere,  description, nom, brasserie, image, date_ajout, date_modif, AVG(IFNULL(note, 0)) as note_moyenne, count(id_note) as note_nombre from biere t1 
-left join note t2 ON t1.id_biere = t2.id_biere GROUP by t1.id_biere";
+		$query =
+				"SELECT
+					t1.id_biere,
+					description,
+					nom,
+					brasserie,
+					image,
+					date_ajout,
+					date_modif,
+					AVG(IFNULL(note, 0)) as note_moyenne,
+					count(id_note) as note_nombre
+				from biere t1 
+				left join note t2 ON t1.id_biere = t2.id_biere
+				GROUP by t1.id_biere";
+				
 		if($mrResultat = $this->_db->query($query))
 		{
 			while($biere = $mrResultat->fetch_assoc())

@@ -106,6 +106,7 @@ class BiereControlleur
             {
                 case 'commentaire':                    
                     $modeleUsager = new Usager();
+                    
                     $id_usager = $modeleUsager->ajouterUsager($oReq->parametres["courriel"]);
 
                     $this->ajouterCommentaire($id_usager, $id_biere, $oReq->parametres["commentaire"]);
@@ -205,7 +206,7 @@ class BiereControlleur
 
         $this->retour["data"] = [
             "message" => "Insertion réussie",
-            "biereId" => $resultatId
+            "commentaireId" => $resultatId
         ];
                 
         return $this->retour;
@@ -223,7 +224,7 @@ class BiereControlleur
         $res = Array();
         $oBiere = new Biere();
         $res = $oBiere->getBiere($id_biere);
-        return $res; 
+        return $res;
     }
     
     /**
